@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>MyFinBank — Admin Dashboard</title>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+
+  <style>
+    :root {
+      --gold: #b8860b;
+      --gold-light: #daa520;
+      --border: rgba(184,134,11,0.25);
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .search-box input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .customer-result {
+      margin-top: 18px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    ⬡ <span>MyFin</span>Bank
+    <small style="font-size:0.65rem; color:var(--grey); margin-left:8px;">
+      ADMIN
+    </small>
+  </div>
+
+  <div class="navbar-links">
+    <a href="admin-dashboard.html" class="active">Dashboard</a>
+    <a href="admin-customers.html">Customers</a>
+    <a href="admin-loans.html">Loan Approvals</a>
+    <a href="admin-support.html">Customer Queries</a>
+  </div>
+
+  <div class="navbar-user">
+    Admin Panel &nbsp;
+    <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-item active" onclick="location.href='admin-dashboard.html'">
+      <span class="icon">🏠</span> Dashboard
+    </div>
+
+    <div class="sidebar-item" onclick="location.href='admin-customers.html'">
+      <span class="icon">👥</span> Customers
+    </div>
+
+    <div class="sidebar-item" onclick="location.href='admin-loans.html'">
+      <span class="icon">📋</span> Loan Approvals
+    </div>
+
+    <div class="sidebar-item" onclick="location.href='admin-support.html'">
+      <span class="icon">💬</span> Customer Queries
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sidebar-item" onclick="logout()">
+      <span class="icon">🚪</span> Logout
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <h2>Admin Dashboard</h2>
+      <p>Manage customers, loan applications and customer queries</p>
+    </div>
+
+    <!-- SUMMARY STATS -->
+    <div class="grid-3" style="margin-bottom:28px;">
+
+      <div class="stat-chip">
+        <span class="label">Total Customers</span>
+        <span class="value" id="stat-customers">—</span>
+      </div>
+
+      <div class="stat-chip">
+        <span class="label">Pending Loans</span>
+        <span class="value" id="stat-loans">—</span>
+      </div>
+
+      <div class="stat-chip">
+        <span class="label">Active Accounts</span>
+        <span class="value" id="stat-active">—</span>
+      </div>
+
+    </div>
+
+    <!-- CUSTOMER SEARCH -->
+    <div class="card" style="margin-bottom:28px;">
+
+      <div class="card-title">🔍 Search Customer</div>
+
+      <p style="font-size:0.88rem; margin-bottom:10px;">
+        Search customer by ID, name or email.
+      </p>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="customerSearchInput"
+          placeholder="Enter customer ID, name or email"
+        />
+
+        <button class="btn btn-primary" onclick="handleCustomerSearch()">
+          Search
+        </button>
+
+        <button class="btn btn-outline" onclick="clearCustomerSearch()">
+          Clear
+        </button>
+      </div>
+
+      <div id="customerSearchResult" class="customer-result"></div>
+
+    </div>
+
+    <!-- QUICK ACTION CARDS -->
+    <div class="grid-2">
+
+      <div class="card" style="cursor:pointer;" onclick="location.href='admin-customers.html'">
+        <div class="card-title">👥 Customer Management</div>
+
+        <p style="font-size:0.88rem; margin-bottom:16px;">
+          View all registered customers. Activate or deactivate accounts.
+        </p>
+
+        <button class="btn btn-outline">Go to Customers →</button>
+      </div>
+
+      <div class="card" style="cursor:pointer;" onclick="location.href='admin-loans.html'">
+        <div class="card-title">📋 Loan Approvals</div>
+
+        <p style="font-size:0.88rem; margin-bottom:16px;">
+          Review pending loan applications and approve or deny them.
+        </p>
+
+        <button class="btn btn-outline">Go to Loans →</button>
+      </div>
+
+      <div class="card" style="cursor:pointer;" onclick="location.href='admin-support.html'">
+        <div class="card-title">💬 Customer Queries</div>
+
+        <p style="font-size:0.88rem; margin-bottom:16px;">
+          View customer issues and send replies.
+        </p>
+
+        <button class="btn btn-outline">Go to Queries →</button>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+
+<script>
+/**
+ * admin-dashboard inline script
+ * --------------------------------
+ * This file does 2 things:
+ *
+ * 1. Loads dashboard summary:
+ *    - total customers
+ *    - active customers
+ *    - pending loans
+ *
+ * 2. Allows admin to search customer:
+ *    - by ID
+ *    - by name
+ *    - by email
+ */
+
+guardRoute("admin");
+
+/**
+ * Page load function
+ * Runs automatically when admin dashboard opens.
+ */
+document.addEventListener("DOMContentLoaded", async () => {
+
+  try {
+    /*
+     * getAllCustomers() comes from api.js
+     * It calls backend:
+     * GET /api/admin/customers
+     */
+    const customers = await getAllCustomers();
+
+    document.getElementById("stat-customers").textContent = customers.length;
+
+    /*
+     * Count active customers only.
+     */
+    const active =
+      customers.filter(c => c.active !== false).length;
+
+    document.getElementById("stat-active").textContent = active;
+
+  } catch (e) {
+    /*
+     * If customers API fails, dashboard still opens.
+     */
+  }
+
+  try {
+    /*
+     * getPendingLoans() comes from api.js
+     * It calls backend:
+     * GET /api/admin/loans/pending
+     */
+    const loans = await getPendingLoans();
+
+    document.getElementById("stat-loans").textContent = loans.length;
+
+  } catch (e) {
+    /*
+     * If loans API fails, dashboard still opens.
+     */
+  }
+
+});
+
+
+/**
+ * Search customer function
+ * ------------------------
+ * This runs when admin clicks Search button.
+ *
+ * Frontend:
+ * Admin enters keyword
+ *
+ * JavaScript:
+ * Calls searchCustomers(keyword)
+ *
+ * Backend:
+ * GET /api/admin/customers/search?keyword=value
+ */
+async function handleCustomerSearch() {
+
+  const keyword =
+    document
+      .getElementById("customerSearchInput")
+      .value
+      .trim();
+
+  if (!keyword) {
+    showToast("Please enter customer ID, name or email", "error");
+    return;
+  }
+
+  const resultBox =
+    document.getElementById("customerSearchResult");
+
+  resultBox.innerHTML = "<p>Searching...</p>";
+
+  try {
+
+    /*
+     * searchCustomers() is added in api.js
+     */
+    const customers =
+      await searchCustomers(keyword);
+
+    if (!customers || customers.length === 0) {
+      resultBox.innerHTML =
+        "<p>No customer found.</p>";
+      return;
+    }
+
+    /*
+     * Show search result in table format.
+     */
+    resultBox.innerHTML = `
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer Name</th>
+            <th>Email</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${
+            customers.map(c => `
+              <tr>
+                <td>#${c.id}</td>
+                <td>${c.fullName || c.username || "—"}</td>
+                <td>${c.email || "—"}</td>
+                <td>
+                  <span class="badge ${c.active ? 'badge-success' : 'badge-danger'}">
+                    ${c.active ? "Active" : "Inactive"}
+                  </span>
+                </td>
+              </tr>
+            `).join("")
+          }
+        </tbody>
+      </table>
+    `;
+
+  } catch (error) {
+
+    resultBox.innerHTML =
+      `<p style="color:red;">${error.message || "Search failed"}</p>`;
+
+  }
+}
+
+
+/**
+ * Clear search result
+ */
+function clearCustomerSearch() {
+  document.getElementById("customerSearchInput").value = "";
+  document.getElementById("customerSearchResult").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>

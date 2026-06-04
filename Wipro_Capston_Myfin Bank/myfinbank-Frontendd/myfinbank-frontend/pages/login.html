@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyFinBank — Customer Login</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<div class="auth-page">
+  <div class="auth-box">
+
+    <!-- Logo / Header -->
+    <div class="auth-logo">
+      <h1>MyFin Bank</h1>
+      <p>Customer Portal</p>
+    </div>
+
+    <!-- Tab switcher: Login ↔ Register -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn"        onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- ── LOGIN FORM ── -->
+    <div id="tab-login" class="tab-content active">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-primary btn-full" onclick="handleLogin()">Sign In</button>
+    </div>
+
+    <!-- ── REGISTER FORM ── -->
+    <div id="tab-register" class="tab-content">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="John Doe" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="Min 6 characters" />
+      </div>
+      <button class="btn btn-primary btn-full" onclick="handleRegister()">Create Account</button>
+    </div>
+
+    <div class="auth-footer">
+      <a href="../index.html">← Back to Home</a>
+      &nbsp;|&nbsp;
+      <a href="admin-login.html">Admin Portal</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Load helpers first, then API -->
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/login.js"></script>
+
+</body>
+</html>

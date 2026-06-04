@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>MyFinBank — Customer Management</title>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+
+  <style>
+    :root {
+      --gold: #b8860b;
+      --gold-light: #daa520;
+      --border: rgba(184,134,11,0.25);
+    }
+
+    /* Search section design */
+    .search-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .search-box input {
+      flex: 1;
+      min-width: 220px;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    ⬡ <span>MyFin</span>Bank
+    <small style="font-size:0.65rem; color:var(--grey); margin-left:8px;">
+      ADMIN
+    </small>
+  </div>
+
+  <div class="navbar-links">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-customers.html" class="active">Customers</a>
+    <a href="admin-loans.html">Loan Approvals</a>
+    <a href="admin-support.html">Customer Queries</a>
+  </div>
+
+  <div class="navbar-user">
+    <button class="btn btn-outline btn-sm" onclick="logout()">
+      Logout
+    </button>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+
+  <aside class="sidebar">
+
+    <div class="sidebar-item" onclick="location.href='admin-dashboard.html'">
+      <span class="icon">🏠</span> Dashboard
+    </div>
+
+    <div class="sidebar-item active" onclick="location.href='admin-customers.html'">
+      <span class="icon">👥</span> Customers
+    </div>
+
+    <div class="sidebar-item" onclick="location.href='admin-loans.html'">
+      <span class="icon">📋</span> Loan Approvals
+    </div>
+
+    <div class="sidebar-item" onclick="location.href='admin-support.html'">
+      <span class="icon">💬</span> Customer Queries
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sidebar-item" onclick="logout()">
+      <span class="icon">🚪</span> Logout
+    </div>
+
+  </aside>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <h2>Customer Management</h2>
+      <p>View, search, activate, or deactivate customer accounts</p>
+    </div>
+
+    <!-- CUSTOMER SEARCH CARD -->
+    <div class="card">
+
+      <div class="card-title">🔍 Search Customer</div>
+
+      <p style="font-size:0.88rem; margin-bottom:14px;">
+        Search customer by ID, full name or email.
+      </p>
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          id="customerSearchInput"
+          placeholder="Enter customer ID, name or email"
+        />
+
+        <!-- Calls handleCustomerSearch() from admin.js -->
+        <button class="btn btn-primary" onclick="handleCustomerSearch()">
+          Search
+        </button>
+
+        <!-- Calls clearCustomerSearch() from admin.js -->
+        <button class="btn btn-outline" onclick="clearCustomerSearch()">
+          Reset
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- CUSTOMER TABLE CARD -->
+    <div class="card">
+
+      <div class="table-wrap">
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="customer-table-body">
+            <!-- Customer rows are populated by admin.js -->
+          </tbody>
+        </table>
+
+      </div>
+
+      <div id="cust-empty" class="empty-state" style="display:none;">
+        <div class="icon">👥</div>
+        <p>No customers found.</p>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/admin.js"></script>
+
+</body>
+</html>

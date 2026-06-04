@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyFinBank — EMI Calculator</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">⬡ <span>MyFin</span>Bank</div>
+  <div class="navbar-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="loans.html">Loans</a>
+    <a href="investments.html">Invest</a>
+    <a href="emi.html" class="active">EMI Calc</a>
+  </div>
+  <div class="navbar-user">
+    <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-item" onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</div>
+    <div class="sidebar-item" onclick="location.href='transactions.html'"><span class="icon">📋</span> Transactions</div>
+    <div class="sidebar-item" onclick="location.href='loans.html'"><span class="icon">🏦</span> Loans</div>
+    <div class="sidebar-item" onclick="location.href='investments.html'"><span class="icon">📈</span> Investments</div>
+    <div class="sidebar-item active" onclick="location.href='emi.html'"><span class="icon">🧮</span> EMI Calculator</div>
+    <div class="divider"></div>
+    <div class="sidebar-item" onclick="logout()"><span class="icon">🚪</span> Logout</div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h2>EMI Calculator</h2>
+      <p>Calculate your monthly EMI before applying for a loan</p>
+    </div>
+
+    <div style="max-width:480px;">
+      <div class="card">
+        <div class="card-title">🧮 Calculate EMI</div>
+
+        <div class="form-group">
+          <label>Loan Amount (₹ Principal)</label>
+          <input type="number" id="emi-principal" placeholder="e.g. 100000" min="1000"/>
+        </div>
+        <div class="form-group">
+          <label>Annual Interest Rate (%)</label>
+          <input type="number" id="emi-rate" placeholder="e.g. 8.5" step="0.1" min="0.1"/>
+        </div>
+        <div class="form-group">
+          <label>Loan Duration (Months)</label>
+          <input type="number" id="emi-months" placeholder="e.g. 24" min="1"/>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="handleEMI()">Calculate EMI</button>
+
+        <!-- Result box (hidden until calculation) -->
+        <div class="emi-result" id="emi-result" style="display:none;">
+          <div class="emi-label">Monthly EMI</div>
+          <div class="emi-value" id="emi-value">—</div>
+          <div class="emi-label" id="emi-summary" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <p style="font-size:0.8rem; margin-top:16px; color:var(--grey);">
+        Formula: EMI = P × r × (1+r)ⁿ / ((1+r)ⁿ − 1)<br/>
+        where P = principal, r = monthly rate, n = months
+      </p>
+    </div>
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+/**
+ * emi page inline script
+ * -----------------------
+ * Calls GET /api/account/emi?principal=&annualRate=&months=
+ * Backend calculates using the standard EMI formula and returns:
+ * { emiPerMonth: 4567.89 }
+ *
+ * We also show a summary: total payment and total interest.
+ */
+
+guardRoute("customer");
+
+async function handleEMI() {
+  const principal  = parseFloat(document.getElementById("emi-principal").value);
+  const annualRate = parseFloat(document.getElementById("emi-rate").value);
+  const months     = parseInt(document.getElementById("emi-months").value);
+
+  // Validate inputs
+  if (!principal || principal < 1000) { showToast("Enter a valid loan amount (min ₹1,000).", "error"); return; }
+  if (!annualRate || annualRate <= 0) { showToast("Enter a valid interest rate.", "error"); return; }
+  if (!months || months < 1)         { showToast("Enter a valid number of months.", "error"); return; }
+
+  showLoader();
+  try {
+    // calculateEMI() → GET /api/account/emi?...  (defined in api.js)
+    const result = await calculateEMI(principal, annualRate, months);
+
+    // result = { emiPerMonth: 4567.89 }
+    const emi          = result.emiPerMonth;
+    const totalPayment = emi * months;
+    const totalInterest = totalPayment - principal;
+
+    // Show the result box
+    document.getElementById("emi-value").textContent = formatCurrency(emi);
+    document.getElementById("emi-summary").innerHTML =
+      `Total Payment: <strong style="color:var(--white)">${formatCurrency(totalPayment)}</strong>
+       &nbsp;|&nbsp; Total Interest: <strong style="color:var(--danger)">${formatCurrency(totalInterest)}</strong>`;
+    document.getElementById("emi-result").style.display = "block";
+
+  } catch (error) {
+    showToast(error.message || "EMI calculation failed.", "error");
+  } finally {
+    hideLoader();
+  }
+}
+</script>
+</body>
+</html>

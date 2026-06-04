@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyFinBank — Loan Approvals</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    :root { --gold: #b8860b; --gold-light: #daa520; --border: rgba(184,134,11,0.25); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">⬡ <span>MyFin</span>Bank <small style="font-size:0.65rem; color:var(--grey); margin-left:8px;">ADMIN</small></div>
+  <div class="navbar-links">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-customers.html">Customers</a>
+    <a href="admin-loans.html" class="active">Loan Approvals</a>
+  </div>
+  <div class="navbar-user">
+    <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-item" onclick="location.href='admin-dashboard.html'"><span class="icon">🏠</span> Dashboard</div>
+    <div class="sidebar-item" onclick="location.href='admin-customers.html'"><span class="icon">👥</span> Customers</div>
+    <div class="sidebar-item active" onclick="location.href='admin-loans.html'"><span class="icon">📋</span> Loan Approvals</div>
+    <div class="divider"></div>
+    <div class="sidebar-item" onclick="logout()"><span class="icon">🚪</span> Logout</div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h2>Pending Loan Applications</h2>
+      <p>Approve or deny loan requests based on customer balance</p>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Loan ID</th>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Purpose</th>
+              <th>Applied On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="loan-table-body">
+            <!-- Populated by admin.js -->
+          </tbody>
+        </table>
+      </div>
+      <div id="loans-empty" class="empty-state" style="display:none;">
+        <div class="icon">✅</div>
+        <p>No pending loan applications.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>

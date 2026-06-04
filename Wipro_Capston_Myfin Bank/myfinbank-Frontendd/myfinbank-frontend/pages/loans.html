@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyFinBank — Loans</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">⬡ <span>MyFin</span>Bank</div>
+  <div class="navbar-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="loans.html" class="active">Loans</a>
+    <a href="investments.html">Invest</a>
+    <a href="emi.html">EMI Calc</a>
+  </div>
+  <div class="navbar-user">
+    <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-item" onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</div>
+    <div class="sidebar-item" onclick="location.href='transactions.html'"><span class="icon">📋</span> Transactions</div>
+    <div class="sidebar-item active" onclick="location.href='loans.html'"><span class="icon">🏦</span> Loans</div>
+    <div class="sidebar-item" onclick="location.href='investments.html'"><span class="icon">📈</span> Investments</div>
+    <div class="sidebar-item" onclick="location.href='emi.html'"><span class="icon">🧮</span> EMI Calculator</div>
+    <div class="divider"></div>
+    <div class="sidebar-item" onclick="logout()"><span class="icon">🚪</span> Logout</div>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h2>Loan Services</h2>
+      <p>Apply for a loan and track your applications</p>
+    </div>
+
+    <div class="grid-2">
+      <!-- APPLY FORM -->
+      <div class="card">
+        <div class="card-title">📝 Apply for a Loan</div>
+        <div class="form-group">
+          <label>Loan Amount (₹)</label>
+          <input type="number" id="loan-amount" placeholder="e.g. 50000" min="1000"/>
+        </div>
+        <div class="form-group">
+          <label>Purpose</label>
+          <input type="text" id="loan-purpose" placeholder="e.g. Home renovation, Education"/>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="handleApplyLoan()">Submit Application</button>
+        <p style="font-size:0.78rem; margin-top:12px; color:var(--grey);">
+          ℹ Loans are approved by Admin based on your account balance.
+        </p>
+      </div>
+
+      <!-- MY LOANS TABLE -->
+      <div class="card">
+        <div class="card-title">📂 My Loan Applications</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Purpose</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="loan-table-body"></tbody>
+          </table>
+        </div>
+        <div id="loan-empty" class="empty-state" style="display:none;">
+          <div class="icon">📋</div>
+          <p>No loan applications yet.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/loans.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyFinBank — Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <div class="navbar-brand">⬡ <span>MyFin</span>Bank</div>
+  <div class="navbar-links">
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="loans.html">Loans</a>
+    <a href="investments.html">Invest</a>
+    <a href="emi.html">EMI Calc</a>
+    <a href="support.html">Support</a>
+  </div>
+  <div class="navbar-user">
+    Hello, <strong id="nav-username">—</strong>
+    &nbsp;
+    <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- ── MAIN LAYOUT ── -->
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-item active" onclick="location.href='dashboard.html'">
+      <span class="icon">🏠</span> Dashboard
+    </div>
+    <div class="sidebar-item" onclick="location.href='transactions.html'">
+      <span class="icon">📋</span> Transactions
+    </div>
+    <div class="sidebar-item" onclick="location.href='loans.html'">
+      <span class="icon">🏦</span> Loans
+    </div>
+    <div class="sidebar-item" onclick="location.href='investments.html'">
+      <span class="icon">📈</span> Investments
+    </div>
+    <div class="sidebar-item" onclick="location.href='emi.html'">
+      <span class="icon">🧮</span> EMI Calculator
+    </div>
+    <div class="sidebar-item" onclick="location.href='support.html'">
+      <span class="icon">💬</span> Support
+    </div>
+    <div class="divider"></div>
+    <div class="sidebar-item" onclick="logout()">
+      <span class="icon">🚪</span> Logout
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <div class="page-header">
+      <h2>Account Overview</h2>
+      <p>Your banking summary at a glance</p>
+    </div>
+
+    <!-- BALANCE CARD (populated by JS) -->
+    <div class="balance-card" style="margin-bottom:28px;">
+      <div class="balance-label">Current Balance</div>
+      <div class="balance-amount" id="balance-amount">Loading...</div>
+      <div class="balance-account" id="balance-account">Account No: —</div>
+    </div>
+
+    <!-- STAT CHIPS ROW -->
+    <div class="grid-3" style="margin-bottom:28px;">
+      <div class="stat-chip">
+        <span class="label">Account Number</span>
+        <span class="value" id="stat-accno">—</span>
+      </div>
+      <div class="stat-chip">
+        <span class="label">Account Type</span>
+        <span class="value" id="stat-type">—</span>
+      </div>
+      <div class="stat-chip">
+        <span class="label">Status</span>
+        <span class="value" id="stat-status">—</span>
+      </div>
+    </div>
+
+    <!-- ACTION CARDS GRID -->
+    <div class="grid-2">
+
+      <!-- DEPOSIT -->
+      <div class="card">
+        <div class="card-title">💰 Deposit Money</div>
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="deposit-amount" placeholder="Enter amount" min="1"/>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="handleDeposit()">Deposit</button>
+      </div>
+
+      <!-- WITHDRAW -->
+      <div class="card">
+        <div class="card-title">💸 Withdraw Money</div>
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="withdraw-amount" placeholder="Enter amount" min="1"/>
+        </div>
+        <button class="btn btn-outline btn-full" onclick="handleWithdraw()">Withdraw</button>
+      </div>
+
+      <!-- FUND TRANSFER -->
+      <div class="card">
+        <div class="card-title">🔁 Fund Transfer</div>
+        <div class="form-group">
+          <label>Recipient Account Number</label>
+          <input type="text" id="transfer-to" placeholder="e.g. ACC-00123"/>
+        </div>
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="transfer-amount" placeholder="Enter amount" min="1"/>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="handleTransfer()">Transfer</button>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="card">
+        <div class="card-title">⚡ Quick Actions</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button class="btn btn-outline btn-full" onclick="location.href='transactions.html'">View Transactions</button>
+          <button class="btn btn-outline btn-full" onclick="location.href='loans.html'">Apply for Loan</button>
+          <button class="btn btn-outline btn-full" onclick="location.href='investments.html'">Start RD / FD</button>
+          <button class="btn btn-outline btn-full" onclick="location.href='emi.html'">EMI Calculator</button>
+          <button class="btn btn-outline btn-full" onclick="location.href='support.html'">Support / Help</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/dashboard.js"></script>
+
+</body>
+</html>

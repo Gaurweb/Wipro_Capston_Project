@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8"/>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0"/>
+
+<title>
+MyFinBank — Smart Banking
+</title>
+
+<link rel="stylesheet"
+href="css/style.css"/>
+
+<style>
+
+/* HERO */
+
+.hero{
+
+min-height:100vh;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+padding:40px 20px;
+
+position:relative;
+
+}
+
+.hero-badge{
+
+display:inline-block;
+
+background:rgba(201,168,76,.12);
+
+border:1px solid var(--border);
+
+border-radius:20px;
+
+padding:6px 18px;
+
+font-size:.8rem;
+
+color:var(--gold);
+
+letter-spacing:2px;
+
+text-transform:uppercase;
+
+margin-bottom:28px;
+
+}
+
+.hero h1{
+
+font-size:clamp(2.8rem,8vw,5rem);
+
+line-height:1.1;
+
+margin-bottom:24px;
+
+}
+
+.hero h1 span{
+
+color:var(--gold);
+
+}
+
+.hero p{
+
+font-size:1.1rem;
+
+max-width:520px;
+
+margin:0 auto 40px;
+
+}
+
+.hero-btns{
+
+display:flex;
+
+gap:16px;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+
+/* FEATURES */
+
+.features{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:20px;
+
+max-width:1300px;
+
+margin:60px auto;
+
+padding:0 40px;
+
+}
+
+.feat-card{
+
+background:var(--card-bg);
+
+border:1px solid var(--border);
+
+border-radius:var(--radius);
+
+padding:30px 24px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.feat-card:hover{
+
+transform:translateY(-5px);
+
+box-shadow:var(--shadow);
+
+}
+
+.feat-icon{
+
+font-size:2rem;
+
+margin-bottom:14px;
+
+}
+
+.feat-card h3{
+
+font-size:1rem;
+
+color:var(--white);
+
+margin-bottom:8px;
+
+}
+
+.feat-card p{
+
+font-size:.85rem;
+
+line-height:1.6;
+
+}
+
+/* PORTAL */
+
+.portal-selector{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:20px;
+
+max-width:650px;
+
+margin:0 auto 70px;
+
+padding:0 20px;
+
+}
+
+.portal-card{
+
+background:var(--card-bg);
+
+border:1px solid var(--border);
+
+border-radius:var(--radius);
+
+padding:36px 24px;
+
+text-align:center;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.portal-card:hover{
+
+border-color:var(--gold);
+
+transform:translateY(-5px);
+
+box-shadow:var(--shadow);
+
+}
+
+.portal-icon{
+
+font-size:2.4rem;
+
+margin-bottom:12px;
+
+}
+
+.portal-card h3{
+
+font-size:1.1rem;
+
+color:var(--white);
+
+margin-bottom:6px;
+
+}
+
+.portal-card p{
+
+font-size:.8rem;
+
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+.features{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:650px){
+
+.features{
+
+grid-template-columns:1fr;
+
+}
+
+.portal-selector{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-badge">
+
+Secure · Smart · Simple
+
+</div>
+
+<h1>
+
+Welcome to <br>
+
+<span>MyFin Bank</span>
+
+</h1>
+
+<p>
+
+Modern banking at your fingertips.
+
+Manage accounts, transfer funds,
+
+apply for loans — all from your browser.
+
+</p>
+
+<div class="hero-btns">
+
+<a href="pages/login.html"
+
+class="btn btn-primary">
+
+Customer Portal
+
+</a>
+
+<a href="pages/admin-login.html"
+
+class="btn btn-outline">
+
+Admin Portal
+
+</a>
+
+</div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<div class="features">
+
+<div class="feat-card">
+
+<div class="feat-icon">
+
+💳
+
+</div>
+
+<h3>
+
+Account Management
+
+</h3>
+
+<p>
+
+Deposit, withdraw and track
+your transaction history.
+
+</p>
+
+</div>
+
+
+
+<div class="feat-card">
+
+<div class="feat-icon">
+
+💸
+
+</div>
+
+<h3>
+
+Fund Transfer
+
+</h3>
+
+<p>
+
+Send money instantly to
+any account securely.
+
+</p>
+
+</div>
+
+
+
+<div class="feat-card">
+
+<div class="feat-icon">
+
+📈
+
+</div>
+
+<h3>
+
+Investments
+
+</h3>
+
+<p>
+
+Grow savings using FD
+and recurring deposits.
+
+</p>
+
+</div>
+
+
+
+<div class="feat-card">
+
+<div class="feat-icon">
+
+🏦
+
+</div>
+
+<h3>
+
+Loan Services
+
+</h3>
+
+<p>
+
+Apply loans and calculate
+EMI online.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<h2 style="text-align:center;margin-bottom:25px;">
+
+Choose Your Portal
+
+</h2>
+
+
+<div class="portal-selector">
+
+
+<div class="portal-card"
+
+onclick="window.location.href='pages/login.html'">
+
+<div class="portal-icon">
+
+👤
+
+</div>
+
+<h3>
+
+Customer
+
+</h3>
+
+<p>
+
+Login or register as customer
+
+</p>
+
+</div>
+
+
+
+<div class="portal-card"
+
+onclick="window.location.href='pages/admin-login.html'">
+
+<div class="portal-icon">
+
+🛡️
+
+</div>
+
+<h3>
+
+Admin
+
+</h3>
+
+<p>
+
+Admin dashboard for bank staff
+
+</p>
+
+</div>
+
+</div>
+
+
+</body>
+
+</html>
